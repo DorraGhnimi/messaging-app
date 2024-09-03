@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -46,9 +45,6 @@ public class InboxController {
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
         model.addAttribute("defaultFolders", defaultFolders);
 
-        Map<String, Integer> counterLabelMAp = folderService.getMapCountersToLabels(userId);
-        model.addAttribute("unreadStats", counterLabelMAp);
-
         //Fetch Messages
         if(!StringUtils.hasText(folder)) {
             folder = "Inbox";
@@ -63,6 +59,7 @@ public class InboxController {
             Date date = new Date(Uuids.unixTimestamp(timeUuid));
             emailListItem.setAgoTimeString(prettyTime.format(date));
         });
+        model.addAttribute("unreadStats", folderService.getMapCountersToLabels(userId));
 
         return "inbox-page";
     }

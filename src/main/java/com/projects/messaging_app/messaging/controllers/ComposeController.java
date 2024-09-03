@@ -49,12 +49,11 @@ public class ComposeController {
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
         model.addAttribute("defaultFolders", defaultFolders);
 
-        Map<String, Integer> counterLabelMAp = folderService.getMapCountersToLabels(userId);
-        model.addAttribute("unreadStats", counterLabelMAp);
-
         // set to ids
         final List<String> toIdsString = splitIds(to);
         model.addAttribute("toIds", String.join(",", toIdsString));
+
+        model.addAttribute("unreadStats", folderService.getMapCountersToLabels(userId));
 
         return "compose-page";
     }
