@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -47,6 +48,9 @@ public class ComposeController {
         model.addAttribute("userFolders", userFolders);
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
         model.addAttribute("defaultFolders", defaultFolders);
+
+        Map<String, Integer> counterLabelMAp = folderService.getMapCountersToLabels(userId);
+        model.addAttribute("unreadStats", counterLabelMAp);
 
         // set to ids
         final List<String> toIdsString = splitIds(to);

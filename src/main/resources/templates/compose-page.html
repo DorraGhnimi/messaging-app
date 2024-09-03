@@ -56,8 +56,8 @@
     <p th:text="${userId}+ ' s Inbox'"> </p>
   </header>
   <nav>
-    <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders = ${defaultFolders})" ></div>
-    <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders = ${userFolders})" ></div>
+    <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders = ${defaultFolders}, unreadStats=${unreadStats})" ></div>
+    <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders = ${userFolders}, unreadStats=${unreadStats})" ></div>
   </nav>
   <main>
     <div class="card"  th:if="${userId}">

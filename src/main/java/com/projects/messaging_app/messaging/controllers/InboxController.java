@@ -5,6 +5,7 @@ import com.projects.messaging_app.messaging.emailList.EmailListItem;
 import com.projects.messaging_app.messaging.emailList.EmailListItemRepository;
 import com.projects.messaging_app.messaging.folders.Folder;
 import com.projects.messaging_app.messaging.folders.FolderRepository;
+import com.projects.messaging_app.messaging.folders.UnreadEmailStatsRepository;
 import com.projects.messaging_app.messaging.services.FolderService;
 
 import org.ocpsoft.prettytime.PrettyTime;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -27,6 +29,7 @@ public class InboxController {
     @Autowired private FolderRepository folderRepository;
     @Autowired private FolderService folderService;
     @Autowired private EmailListItemRepository emailListItemRepository;
+    @Autowired private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     @RequestMapping("/")
     public String homePage(@AuthenticationPrincipal OAuth2User principal, @RequestParam(required = false) String folder, Model model) {
@@ -42,6 +45,9 @@ public class InboxController {
         model.addAttribute("userFolders", userFolders);
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
         model.addAttribute("defaultFolders", defaultFolders);
+
+        Map<String, Integer> counterLabelMAp = folderService.getMapCountersToLabels(userId);
+        model.addAttribute("unreadStats", counterLabelMAp);
 
         //Fetch Messages
         if(!StringUtils.hasText(folder)) {
