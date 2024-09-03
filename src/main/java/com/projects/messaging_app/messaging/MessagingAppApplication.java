@@ -45,7 +45,7 @@ public class MessagingAppApplication {
 		folderRepository.save(new Folder("DorraGhnimi", "Sent", "yellow"));
 		folderRepository.save(new Folder("DorraGhnimi", "Important", "green"));
 
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<2; i++) {
 			EmailListItemKey key = new EmailListItemKey("DorraGhnimi", "Inbox", Uuids.timeBased());
 			EmailListItem emailListItem = new EmailListItem(key, Arrays.asList("DorraGhnimi", "Rag"), "Subject " + i, true);
 			emailListItemRepository.save(emailListItem);
