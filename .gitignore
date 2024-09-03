@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+###  name of the DB secure conect bundle
+connect.zip
+
+*.dylib
