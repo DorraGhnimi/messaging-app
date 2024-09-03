@@ -1,3 +1,3 @@
 # Massaging App
 - Java 11
-- Cassandradb
+- Cassandradb (https://astra.datastax.com)
