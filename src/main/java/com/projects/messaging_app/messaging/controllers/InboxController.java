@@ -2,7 +2,6 @@ package com.projects.messaging_app.messaging.controllers;
 
 import com.datastax.oss.driver.api.core.uuid.Uuids;
 import com.projects.messaging_app.messaging.emailList.EmailListItem;
-import com.projects.messaging_app.messaging.emailList.EmailListItemKey;
 import com.projects.messaging_app.messaging.emailList.EmailListItemRepository;
 import com.projects.messaging_app.messaging.folders.Folder;
 import com.projects.messaging_app.messaging.folders.FolderRepository;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
@@ -25,13 +25,11 @@ import java.util.UUID;
 public class InboxController {
 
     @Autowired private FolderRepository folderRepository;
-
     @Autowired private FolderService folderService;
-
     @Autowired private EmailListItemRepository emailListItemRepository;
 
     @RequestMapping("/")
-    public String homePage(@AuthenticationPrincipal OAuth2User principal, Model model) {
+    public String homePage(@AuthenticationPrincipal OAuth2User principal, @RequestParam(required = false) String folder, Model model) {
         if(principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
             System.out.println("Not logged in user");
             return "index";
@@ -46,8 +44,11 @@ public class InboxController {
         model.addAttribute("defaultFolders", defaultFolders);
 
         //Fetch Messages
-        String folderLabel = "Inbox";
-        List<EmailListItem> emailListItems = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folderLabel);
+        if(!StringUtils.hasText(folder)) {
+            folder = "Inbox";
+        }
+        model.addAttribute("folder", folder);
+        List<EmailListItem> emailListItems = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);
         model.addAttribute("emailListItems", emailListItems);
 
         PrettyTime prettyTime = new PrettyTime();

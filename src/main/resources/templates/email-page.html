@@ -53,28 +53,29 @@
 <body>
     <div class="container">
         <header>
-            <h1 th:text="${userId}"></h1>
+            <h1 > hi user</h1>
         </header>
         <nav>
             <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders = ${defaultFolders})" ></div>
             <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders = ${userFolders})" ></div>
         </nav>
         <main>
-            <div class="card"  th:if="${emailListItems}">
-                <div class="card-header" th:text="${folder}">
+            <div class="card"  th:if="${email}">
+                <div class="card-header">
+                    View Email
                 </div>
-                <div class="card-body">
-                    <div class="list-group">
-                        <a  th:each="email : ${emailListItems}" th:href="@{'/email/' + ${email.key.timeUuid}}" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 th:text="${email.subject}" class="mb-1">subject</h5>
-                                <small th:text="${email.agoTimeString}" >time</small>
-                            </div>
-                            <p th:text="${email.to}" class="mb-1">to</p>
-                        </a>
-                    </div>
-                </div>
+                <dl class="card-body">
+                    <dt>from</dt>
+                    <dd th:text="${email.from}"> </dd>
+                    <dt>to</dt>
+                    <dd th:text="${toListString}"> </dd>
+                    <dt>subject</dt>
+                    <dd th:text="${email.subject}"> </dd>
+                    <dt>body</dt>
+                    <dd th:text="${email.body}"> </dd>
+                </dl>
             </div>
+
         </main>
         <footer>
             fooooooooter
