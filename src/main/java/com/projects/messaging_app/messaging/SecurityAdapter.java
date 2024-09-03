@@ -1,4 +1,4 @@
-package com.projects.messaging_app;
+package com.projects.messaging_app.messaging;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpStatus;
