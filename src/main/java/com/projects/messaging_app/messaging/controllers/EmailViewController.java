@@ -48,7 +48,7 @@ public class EmailViewController {
         Email email = emailOptional.get();
         model.addAttribute("email", email);
 
-        String toListString = String.join(" ,",email.getTo());
+        String toListString = String.join(",",email.getTo());
         model.addAttribute("toListString", toListString);
 
         return "email-page";

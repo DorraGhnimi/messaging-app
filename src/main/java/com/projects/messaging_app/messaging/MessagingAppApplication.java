@@ -8,6 +8,7 @@ import com.projects.messaging_app.messaging.emailList.EmailListItemKey;
 import com.projects.messaging_app.messaging.emailList.EmailListItemRepository;
 import com.projects.messaging_app.messaging.folders.Folder;
 import com.projects.messaging_app.messaging.folders.FolderRepository;
+import com.projects.messaging_app.messaging.folders.UnreadEmailStatsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +29,7 @@ public class MessagingAppApplication {
 	@Autowired private FolderRepository folderRepository;
 	@Autowired private EmailListItemRepository emailListItemRepository;
 	@Autowired private EmailRepository emailRepository;
+	@Autowired private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MessagingAppApplication.class, args);
@@ -50,6 +52,8 @@ public class MessagingAppApplication {
 			EmailListItem emailListItem = new EmailListItem(key, Arrays.asList("DorraGhnimi", "Rag"), "Subject " + i, true);
 			emailListItemRepository.save(emailListItem);
 			Email email = new Email(key.getTimeUuid(),"floki", emailListItem.getTo(), emailListItem.getSubject(), "body "+i);
+			unreadEmailStatsRepository.incrementUnreadCounter("DorraGhnimi", "Inbox");
+
 			emailRepository.save(email);
 		}
 	}

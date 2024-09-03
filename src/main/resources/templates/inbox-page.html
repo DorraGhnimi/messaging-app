@@ -53,9 +53,12 @@
 <body>
     <div class="container">
         <header>
-            <h1 th:text="${userId}"></h1>
+            <p th:text="${userId}+ ' s Inbox'"> </p>
         </header>
         <nav>
+            <div class="card p-4" >
+                <a href="/compose" class="btn btn-primary">Compose email</a>
+            </div>
             <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders = ${defaultFolders})" ></div>
             <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders = ${userFolders})" ></div>
         </nav>

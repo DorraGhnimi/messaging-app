@@ -34,3 +34,5 @@ build/
 
 ###  name of the DB secure conect bundle
 connect.zip
+
+*.dylib
