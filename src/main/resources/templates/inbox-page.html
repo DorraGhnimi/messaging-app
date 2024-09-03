@@ -60,7 +60,39 @@
             <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders = ${userFolders})" ></div>
         </nav>
         <main>
-            email list
+            <div class="card"  th:if="${emailListItems}">
+                <div class="card-header" th:text="${panelName}">
+                    folders
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li th:each="folder : ${folders}" class="list-group-item d-flex justify-content-between align-items-center">
+                            <span th:text="${folder.label}">label</span>
+                            <span class="badge bg-primary rounded-pill">14</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="card"  th:if="${emailListItems}">
+                <div class="card-header" th:text="${folderLabel}">
+                    Inbox
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a  th:each="email : ${emailListItems}"  href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 th:text="${email.subject}" class="mb-1">subject</h5>
+                                <small th:text="${email.agoTimeString}" >time</small>
+                            </div>
+                            <p th:text="${email.to}" class="mb-1">to</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
         </main>
         <footer>
             fooooooooter
