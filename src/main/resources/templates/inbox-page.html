@@ -56,22 +56,8 @@
             <h1 > hi user</h1>
         </header>
         <nav>
-            <div class="card">
-                <div class="card-header">
-                    folders
-                </div>
-                <div class="card-body">
-
-                    <ul class="list-group">
-                        <li th:each="folder : ${userFolders}" class="list-group-item d-flex justify-content-between align-items-center">
-                            <span th:text="${folder.label}">label</span>
-                            <span class="badge bg-primary rounded-pill">14</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-
+            <div th:insert="components/folder-list :: folder-list (panelName = 'Folders', folders = ${defaultFolders})" ></div>
+            <div th:insert="components/folder-list :: folder-list (panelName = 'User Folders', folders = ${userFolders})" ></div>
         </nav>
         <main>
             email list
