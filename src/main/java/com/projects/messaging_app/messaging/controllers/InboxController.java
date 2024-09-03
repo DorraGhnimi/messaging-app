@@ -30,9 +30,6 @@ public class InboxController {
         model.addAttribute("userFolders", userFolders);
         model.addAttribute("userId", userId);
 
-        System.out.println("Welcome " + userId);
-        System.out.println("model " + model);
-        System.out.println(userFolders.size());
         return "inbox-page";
     }
 }
