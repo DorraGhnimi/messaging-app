@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,6 +45,7 @@ public class EmailViewController {
         // Fetch folders
         String userId = principal.getAttribute("login");
         model.addAttribute("userId", userId);
+        model.addAttribute("username", principal.getAttribute("name"));
         List<Folder> userFolders = folderRepository.findAllById(userId);
         model.addAttribute("userFolders", userFolders);
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
@@ -51,12 +53,18 @@ public class EmailViewController {
 
         Optional<Email> emailOptional = emailRepository.findById(emailId);
         if(!emailOptional.isPresent()) {
-            return "inbox-page";
+            return "redirect:/";
         }
         Email email = emailOptional.get();
-        model.addAttribute("email", email);
-
         String toListString = String.join(",",email.getTo());
+
+        // check if user has permission to see requested email
+        if(!userId.equals(email.getFrom()) &&  !email.getTo().contains(userId)) {
+            System.out.println(userId + "can not see requested email!");
+            return "redirect:/";
+        }
+
+        model.addAttribute("email", email);
         model.addAttribute("toListString", toListString);
 
         EmailListItemKey emailListItemKey = new EmailListItemKey(userId, folderLabel, email.getId());

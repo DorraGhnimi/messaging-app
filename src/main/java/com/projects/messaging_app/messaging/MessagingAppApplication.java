@@ -42,5 +42,6 @@ public class MessagingAppApplication {
 		for(int i=0; i<2; i++) {
 			emailService.send("floki", Arrays.asList("DorraGhnimi", "Rag"), "test subject" + i, "test body" + i);
 		}
+		emailService.send("floki", Arrays.asList("floki", "Rag"), "test subject" , "test body");
 	}
 }

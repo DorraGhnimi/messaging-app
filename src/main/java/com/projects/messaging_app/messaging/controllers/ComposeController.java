@@ -44,6 +44,7 @@ public class ComposeController {
         // Fetch folders
         String userId = principal.getAttribute("login");
         model.addAttribute("userId", userId);
+        model.addAttribute("username", principal.getAttribute("name"));
         List<Folder> userFolders = folderRepository.findAllById(userId);
         model.addAttribute("userFolders", userFolders);
         List<Folder> defaultFolders = folderService.fetchDefaultFolders(userId);
