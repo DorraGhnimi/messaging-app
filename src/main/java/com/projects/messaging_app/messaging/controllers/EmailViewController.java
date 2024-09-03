@@ -2,6 +2,7 @@ package com.projects.messaging_app.messaging.controllers;
 
 import com.projects.messaging_app.messaging.email.Email;
 import com.projects.messaging_app.messaging.email.EmailRepository;
+import com.projects.messaging_app.messaging.email.EmailService;
 import com.projects.messaging_app.messaging.emailList.EmailListItem;
 import com.projects.messaging_app.messaging.emailList.EmailListItemKey;
 import com.projects.messaging_app.messaging.emailList.EmailListItemRepository;
@@ -34,6 +35,8 @@ public class EmailViewController {
     @Autowired private EmailRepository emailRepository;
     @Autowired private EmailListItemRepository emailListItemRepository;
     @Autowired private UnreadEmailStatsRepository unreadEmailStatsRepository;
+    @Autowired
+    private EmailService emailService;
 
     @RequestMapping("/email/{id}")
     public String emailView(@AuthenticationPrincipal OAuth2User principal, @PathVariable(name = "id") UUID emailId, Model model, @RequestParam String folderLabel) {
@@ -59,7 +62,7 @@ public class EmailViewController {
         String toListString = String.join(",",email.getTo());
 
         // check if user has permission to see requested email
-        if(!userId.equals(email.getFrom()) &&  !email.getTo().contains(userId)) {
+        if(!emailService.doesHaveAccess(email, userId)) {
             System.out.println(userId + "can not see requested email!");
             return "redirect:/";
         }

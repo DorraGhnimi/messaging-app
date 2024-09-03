@@ -40,4 +40,19 @@ public class EmailService {
         EmailListItemKey key = new EmailListItemKey(toId, folderLabel, email.getId());
         return new EmailListItem(key, toIdsList, subject, true);
     }
+
+    public boolean doesHaveAccess(Email email, String userId) {
+        return userId.equals(email.getFrom()) || email.getTo().contains(userId);
+    }
+
+    public String getReplyBody(Email email) {
+        return "\n\n\n---------------------------\n" +
+                "From: " + email.getFrom() + "\n" +
+                "To: " + email.getTo() + "\n" +
+                email.getBody();
+    }
+
+    public String getReplySubject(String subject) {
+        return "Re: " + subject;
+    }
 }

@@ -1,5 +1,7 @@
 package com.projects.messaging_app.messaging.controllers;
 
+import com.projects.messaging_app.messaging.email.Email;
+import com.projects.messaging_app.messaging.email.EmailRepository;
 import com.projects.messaging_app.messaging.email.EmailService;
 import com.projects.messaging_app.messaging.folders.Folder;
 import com.projects.messaging_app.messaging.folders.FolderRepository;
@@ -22,20 +24,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
 public class ComposeController {
 
-    @Autowired
-    private FolderRepository folderRepository;
-    @Autowired
-    private FolderService folderService;
-    @Autowired
-    private EmailService emailService;
+    @Autowired private FolderRepository folderRepository;
+    @Autowired private FolderService folderService;
+    @Autowired private EmailService emailService;
+    @Autowired private EmailRepository emailRepository;
 
     @GetMapping("/compose")
-    public String composePage(@AuthenticationPrincipal OAuth2User principal, @RequestParam(required = false) String to, Model model) {
+    public String composePage(@AuthenticationPrincipal OAuth2User principal,@RequestParam(required = false) UUID id, @RequestParam(required = false) String to, Model model) {
         if (principal == null || !StringUtils.hasText(principal.getAttribute("login"))) {
             System.out.println("Not logged in user");
             return "index";
@@ -55,6 +57,18 @@ public class ComposeController {
         model.addAttribute("toIds", String.join(",", toIdsString));
 
         model.addAttribute("unreadStats", folderService.getMapCountersToLabels(userId));
+        Optional<Email> emailOptional = emailRepository.findById(id);
+        Email email = null;
+        if(emailOptional.isPresent()) {
+            email = emailOptional.get();
+
+            if(emailService.doesHaveAccess(email, userId)) {
+                System.out.println(userId + "can not see requested email!");
+                model.addAttribute("subject", emailService.getReplySubject(email.getSubject()));
+                model.addAttribute("body", emailService.getReplyBody(email));
+            }
+        }
+        model.addAttribute("email", email);
 
         return "compose-page";
     }
